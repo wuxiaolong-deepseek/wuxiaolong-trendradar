@@ -2,8 +2,8 @@ name: News Crawler
 
 on:
   schedule:
-    # 每周一 UTC 0:00 = 北京时间 8:00 抓取
-    - cron: "0 0 * * 1"
+    # 周一到周五 UTC 0:00 = 北京时间 8:00 抓取推送(周末不推)
+    - cron: "0 0 * * 1-5"
   workflow_dispatch:
 
 permissions:
