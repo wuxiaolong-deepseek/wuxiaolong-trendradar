@@ -85,7 +85,7 @@ report:
   display_mode: "keyword"           # 按 actionable 标签分组
   sort_by_position_first: true
   rank_threshold: 5
-  max_news_per_keyword: 2           # 每个 AI 标签最多 2 条，防止单类刷屏
+  max_news_per_keyword: 3           # 每个 AI 标签最多 3 条，兼顾 8–12 条目标与防刷屏
 
 
 # ===============================================================
@@ -104,7 +104,7 @@ filter:
 ai_filter:
   batch_size: 30                    # 一次送 AI 30 条(4 源 × 1 天,够用)
   batch_interval: 2
-  min_score: 0.7                    # 收紧到 ≥0.7；不确定内容直接丢弃
+  min_score: 0.6                    # Run #12 实测 0.7 仅保留 5 条；降至 0.6 以稳定达到 8–12 条
   reclassify_threshold: 0.5
   prompt_file: "prompt.txt"         # TrendRadar 默认筛选 prompt
   extract_prompt_file: "extract_prompt.txt"
