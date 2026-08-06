@@ -1,17 +1,19 @@
 # ═══════════════════════════════════════════════════════════════
-#                    TrendRadar 配置文件(已定制)
-#                      Version: 2.4.0
+#                    TrendRadar 配置文件(已定制 v3)
+#                      TrendRadar v6.10.0
 # ═══════════════════════════════════════════════════════════════
 #
 # 可视化配置编辑器: https://sansan0.github.io/TrendRadar/
 #
-# 本文件为定制版,关键变更:
-#   - schedule.enabled = false(时间由 GitHub Actions cron 控制)
-#   - report.mode = incremental(每周一只推 7 天新增,零重复)
-#   - display.regions:只显示热榜匹配 + AI 解读
-#   - RSS 关闭(用户只用 B 站 + 默认 11 平台)
+# 本文件为 v3 定制版,关键变更:
+#   - 工作日 1 次推送(cron 1-5,时间由 GitHub Actions 控制)
+#   - schedule.enabled = false(本地调度关闭,统一用 cron)
+#   - report.mode = incremental(增量模式,周末累积到周一)
+#   - platforms:只保留 B 站 + 知乎 2 个热榜平台(关其他 9 个)
+#   - RSS:开启 5 个源(机器之心/量子位/HN/PH/GitHub Trending)
 #   - 翻译关闭(AI 解读够用,省 token)
-#   - AI 模型用环境变量覆盖(AI_MODEL / AI_API_KEY / AI_API_BASE)
+#   - AI 模型用环境变量覆盖(智谱 GLM-4-Flash)
+#   - ai_analysis.max_news_for_analysis = 12(限制 AI 解读数量)
 #
 
 
@@ -24,7 +26,7 @@ app:
 
 
 # ===============================================================
-# 1.5 调度系统(关闭 — 时间由 GitHub Actions 控制)
+# 1.5 调度系统(关闭 — 时间由 GitHub Actions cron 控制)
 # ===============================================================
 schedule:
   enabled: false
@@ -32,64 +34,62 @@ schedule:
 
 
 # ===============================================================
-# 2. 数据源 - 热榜平台(B 站 + 默认 11 平台,全部启用)
+# 2. 数据源 - 热榜平台(只保留 B 站 + 知乎,关掉其他 9 个)
 # ===============================================================
 platforms:
   enabled: true
   api_url: ""
   sources:
-    - id: "toutiao"
-      name: "今日头条"
-      expected_domain: "toutiao.com"
-    - id: "baidu"
-      name: "百度热搜"
-      expected_domain: "baidu.com"
-    - id: "wallstreetcn-hot"
-      name: "华尔街见闻"
-      expected_domain: "wallstreetcn.com"
-    - id: "thepaper"
-      name: "澎湃新闻"
-      expected_domain: "thepaper.cn"
     - id: "bilibili-hot-search"
       name: "bilibili 热搜"
       expected_domain: "bilibili.com"
-    - id: "cls-hot"
-      name: "财联社热门"
-      expected_domain: "cls.cn"
-    - id: "ifeng"
-      name: "凤凰网"
-      expected_domain: "ifeng.com"
-    - id: "tieba"
-      name: "贴吧"
-      expected_domain: "baidu.com"
-    - id: "weibo"
-      name: "微博"
-      expected_domain: "weibo.com"
-    - id: "douyin"
-      name: "抖音"
-      expected_domain: "douyin.com"
     - id: "zhihu"
       name: "知乎"
       expected_domain: "zhihu.com"
 
 
 # ===============================================================
-# 3. 数据源 - RSS 订阅(关闭 — 用户只用热榜)
+# 3. 数据源 - RSS 订阅(5 个 AI/GitHub 圈源)
 # ===============================================================
 rss:
-  enabled: false
+  enabled: true
   freshness_filter:
-    enabled: false
+    enabled: true
     max_age_days: 1
-  feeds: []
+  feeds:
+    # 中文 AI 圈 — 机器之心
+    - id: "jiqizhixin"
+      name: "机器之心"
+      url: "https://www.jiqizhixin.com/rss"
+      category: "tech"
+    # 中文 AI 圈 — 量子位
+    - id: "qbitai"
+      name: "量子位"
+      url: "https://www.qbitai.com/feed"
+      category: "tech"
+    # 海外 AI 圈 — Hacker News
+    - id: "hackernews"
+      name: "Hacker News"
+      url: "https://news.ycombinator.com/rss"
+      category: "tech"
+    # 海外产品圈 — Product Hunt
+    - id: "producthunt"
+      name: "Product Hunt"
+      url: "https://www.producthunt.com/feed"
+      category: "tech"
+    # GitHub Trending 周榜
+    - id: "github-trending"
+      name: "GitHub Trending"
+      url: "https://mshibanami.github.io/GitHubTrendingRSS/weekly/all.xml"
+      category: "tech"
 
 
 # ===============================================================
 # 4. 报告模式(关键!)
-#   incremental = 只推新增,周一时就是过去 7 天的累积新增
+#   incremental = 只推新增,周一时自动汇总 7 天新增
 # ===============================================================
 report:
-  mode: "incremental"             # 增量模式:周一时自动汇总 7 天新增
+  mode: "incremental"             # 增量模式:周一自动汇总 7 天新增
   display_mode: "keyword"         # 按关键词分组显示
   sort_by_position_first: true    # 按 frequency_words.txt 的定义顺序
   rank_threshold: 5
@@ -129,7 +129,7 @@ display:
   regions:
     hotlist: true                 # 显示关键词匹配的热榜
     new_items: false              # 关闭(已有 hotlist)
-    rss: false                    # 关闭(未启用 RSS)
+    rss: true                     # 开启 RSS 区域
     standalone: false             # 关闭(无需独立展示)
     ai_analysis: true             # 显示 AI 解读
 
@@ -149,7 +149,6 @@ notification:
       webhook_url: ""             # 飞书(本项目未用,改用钉钉)
     dingtalk:
       webhook_url: ""             # 由环境变量 DINGTALK_WEBHOOK_URL 注入
-      webhook_url: ""
     wework:
       webhook_url: ""
       msg_type: "markdown"
@@ -227,8 +226,8 @@ ai_analysis:
   language: "Chinese"
   prompt_file: "ai_analysis_prompt.txt"
   mode: "incremental"            # 强制 incremental,跟 report.mode 一致
-  max_news_for_analysis: 150
-  include_rss: false
+  max_news_for_analysis: 12      # 关键:每天最多 12 条送 AI 解读(对应钉钉推送 8-12 条目标)
+  include_rss: true              # 开启 — RSS 内容也要 AI 解读
   include_standalone: false
   include_rank_timeline: true
 
