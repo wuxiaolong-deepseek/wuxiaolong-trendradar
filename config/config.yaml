@@ -63,20 +63,15 @@ rss:
       name: "量子位"
       url: "https://www.qbitai.com/feed"
       category: "tech"
-    # 海外 AI 圈 — Hacker News
+    # 海外 AI 圈 — Hacker News(Launch HN / Show HN 重点)
     - id: "hackernews"
       name: "Hacker News"
       url: "https://news.ycombinator.com/rss"
       category: "tech"
-    # 海外产品圈 — Product Hunt
+    # 海外产品圈 — Product Hunt(新工具发布主战场)
     - id: "producthunt"
       name: "Product Hunt"
       url: "https://www.producthunt.com/feed"
-      category: "tech"
-    # GitHub Trending 周榜
-    - id: "github-trending"
-      name: "GitHub Trending"
-      url: "https://mshibanami.github.io/GitHubTrendingRSS/weekly/all.xml"
       category: "tech"
 
 
