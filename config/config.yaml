@@ -5,7 +5,7 @@
 #
 # v6 关键变更(从 v5 → v6):
 #   - platforms.enabled = true(TrendRadar 总采集开关必须开),sources = [](不抓热榜,只走 RSS)
-#   - RSS 改为 4 源(机器之心 / 量子位 / Ben's Bites / Product Hunt)
+#   - RSS 改为 4 源（OpenAI News / 量子位 / Ben's Bites / Product Hunt）
 #   - filter.method = ai(AI 智能筛选,不再靠关键词匹配)
 #   - ai_filter.prompt_file 指向 prompt.txt(TrendRadar 默认 AI 筛选 prompt)
 #   - 用户偏好单独写在 config/ai_interests.txt
@@ -53,10 +53,10 @@ rss:
     enabled: true
     max_age_days: 1                # 只取 1 天内的,避免推陈旧内容
   feeds:
-    # 中文 AI 圈 — 机器之心
-    - id: "jiqizhixin"
-      name: "机器之心"
-      url: "https://www.jiqizhixin.com/rss"
+    # OpenAI 官方更新 — 模型、产品、API 与价格发布
+    - id: "openai-news"
+      name: "OpenAI News"
+      url: "https://openai.com/news/rss.xml"
       category: "tech"
     # 中文 AI 圈 — 量子位
     - id: "qbitai"
@@ -85,7 +85,7 @@ report:
   display_mode: "keyword"           # 按 actionable 标签分组
   sort_by_position_first: true
   rank_threshold: 5
-  max_news_per_keyword: 0
+  max_news_per_keyword: 2           # 每个 AI 标签最多 2 条，防止单类刷屏
 
 
 # ===============================================================
@@ -104,7 +104,7 @@ filter:
 ai_filter:
   batch_size: 30                    # 一次送 AI 30 条(4 源 × 1 天,够用)
   batch_interval: 2
-  min_score: 0.6                    # 评分 ≥ 0.6 才保留(避免噪音)
+  min_score: 0.7                    # 收紧到 ≥0.7；不确定内容直接丢弃
   reclassify_threshold: 0.5
   prompt_file: "prompt.txt"         # TrendRadar 默认筛选 prompt
   extract_prompt_file: "extract_prompt.txt"
@@ -222,7 +222,7 @@ ai_analysis:
   max_news_for_analysis: 20         # 最多给 AI 解读 20 条筛选结果
   include_rss: true                 # 开启 — RSS 内容也要 AI 解读
   include_standalone: false
-  include_rank_timeline: true
+  include_rank_timeline: false      # RSS-only 无排名轨迹，关闭以节省 token
 
 
 # ===============================================================
