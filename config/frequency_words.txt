@@ -72,25 +72,25 @@ AGI
 
 
 # ═══════════════════════════════════════════════════════════════
-# 2. GitHub — 趋势项目、开源、代码
+# 2. AI 工具 / 技能 — 新发布的 AI 工具、技能聚合平台
 # ═══════════════════════════════════════════════════════════════
+# 核心来源:Product Hunt(新工具发布)+ Hacker News(Launch HN/Show HN)
 
-[GitHub]
-/GitHub|github\.com|GitHub Trending|Trending/
-# 开源
-/开源|Open Source|Repository|repo|MIT License|Apache|GPL/
-# Show HN / Launch HN 类
-/Show HN|Launch HN|Hacker News|YC S\d+|Y Combinator/
-# 编程语言与框架
-/Python|JavaScript|TypeScript|Rust|Go |C\+\+|Java |Swift|Kotlin|Ruby|PHP|React|Vue|Angular|Svelte|Next\.js|Nuxt|Django|Flask|FastAPI|Node\.js|Deno|Bun/
-# 开发工具
-/VS Code|VSCode|JetBrains|IntelliJ|PyCharm|WebStorm|Sublime|Vim|Emacs|Docker|Kubernetes|nginx|Redis|MySQL|PostgreSQL|MongoDB|SQLite/
-# 仓库/项目常用词
-/star|fork|commit|pull request|PR |issue|README|README\.md|changelog|release/
-# 仓库名常见词
-/awesome|awesome-list|tutorial-|cookbook|cheatsheet|roadmap|best-practices|template|boilerplate|starter|examples/
-# 趋势性事件
-/star 数|trending|爆款|登顶|登榜|刷榜|上万 star|破万|破千/
+[AI 工具/技能]
+# Product Hunt 平台
+/Product Hunt|producthunt\.com|product hunt|新产品发布/
+# Hacker News 上的工具发布
+/Launch HN|Show HN|launch|ship|announce|introducing|unveil|reveal|new tool|new app|new release|now available|now in beta|just launched/i
+# 工具/产品常用英文
+/app|tool|platform|service|extension|plugin|integration|SDK|framework|library|CLI|IDE|editor/
+# AI 技能生态核心词
+/AI skill|Agent skill|Claude skill|Claude Code skill|agent-skill|agent skill|MCP server|MCP tool|Model Context Protocol|AI coding/i
+# skills.sh / SkillHub 中国 等
+/skills\.sh|skill hub|skill hub|skillhub|skill-cn\.com|技能商店|技能市场|技能聚合|AI 技能|Agent 技能|skill creator|skill ranking|skill install|weekly install|trending skills/i
+# AI 应用方向(代替工具)
+/AI app|AI tool|AI agent|AI assistant|AI copilot|AI workflow|AI automation|AI platform|AI service|AI solution|AI product/i
+# 中文 AI 工具/产品
+/AI 工具|AI 产品|AI 应用|AI 助手|AI 编程|AI 代码|AI 代理|AI 智能体|AI 平台/
 
 
 # ═══════════════════════════════════════════════════════════════
