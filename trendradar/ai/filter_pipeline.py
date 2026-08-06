@@ -34,6 +34,12 @@ class AIFilterPipeline:
         self._filter_config = config.get("AI_FILTER", {})
         self._debug = config.get("DEBUG", False)
 
+        self._platform_ids = {
+            str(platform.get("id", "")).strip()
+            for platform in config.get("PLATFORMS", [])
+            if str(platform.get("id", "")).strip()
+        }
+
         rss_config = config.get("RSS", {})
         self._rss_enabled = rss_config.get("ENABLED", False)
         self._rss_feeds = rss_config.get("FEEDS", [])
@@ -154,8 +160,15 @@ class AIFilterPipeline:
         # 7. 结束批量模式
         self.storage.end_batch()
 
-        # 8. 查询并组装返回结果
-        all_results = self.storage.get_active_ai_filter_results(interests_file=effective_interests_file)
+        # 8. 查询并组装返回结果。热榜结果必须属于当前配置的平台；
+        # RSS 结果独立保留。RSS-only（PLATFORMS=[]）时旧热榜缓存不会泄漏。
+        all_results = [
+            result for result in self.storage.get_active_ai_filter_results(
+                interests_file=effective_interests_file
+            )
+            if result.get("source_type") != "hotlist"
+            or result.get("source_id", "") in self._platform_ids
+        ]
 
         if self._debug:
             print(f"[AI筛选][DEBUG] === 最终汇总 ===")
@@ -274,7 +287,10 @@ class AIFilterPipeline:
                 print(f"[AI筛选]   清除 {cleared} 条不匹配记录，将在新标签下重新分析")
 
     def _collect_pending_news(self, effective_interests_file: str):
-        all_news = self.storage.get_all_news_ids()
+        all_news = [
+            news for news in self.storage.get_all_news_ids()
+            if news.get("source_id", "") in self._platform_ids
+        ]
         analyzed_hotlist = self.storage.get_analyzed_news_ids("hotlist", interests_file=effective_interests_file)
         pending_news = [n for n in all_news if n["id"] not in analyzed_hotlist]
 
