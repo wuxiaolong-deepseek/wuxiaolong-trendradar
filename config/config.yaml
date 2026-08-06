@@ -57,12 +57,8 @@ rss:
     enabled: true
     max_age_days: 1
   feeds:
-    # 中文 AI 圈 — 机器之心
-    - id: "jiqizhixin"
-      name: "机器之心"
-      url: "https://www.jiqizhixin.com/rss"
-      category: "tech"
     # 中文 AI 圈 — 量子位
+    # (机器之家 RSS 因 XML 解析失败 mitched tag 暂时移除,量子位同定位覆盖)
     - id: "qbitai"
       name: "量子位"
       url: "https://www.qbitai.com/feed"
@@ -226,7 +222,7 @@ ai_analysis:
   language: "Chinese"
   prompt_file: "ai_analysis_prompt.txt"
   mode: "incremental"            # 强制 incremental,跟 report.mode 一致
-  max_news_for_analysis: 12      # 关键:每天最多 12 条送 AI 解读(对应钉钉推送 8-12 条目标)
+  max_news_for_analysis: 8       # 关键:每天最多 8 条送 AI 解读(简短标签摘要)
   include_rss: true              # 开启 — RSS 内容也要 AI 解读
   include_standalone: false
   include_rank_timeline: true
