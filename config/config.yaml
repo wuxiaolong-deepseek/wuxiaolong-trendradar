@@ -4,14 +4,14 @@
 # ═══════════════════════════════════════════════════════════════
 #
 # v6 关键变更(从 v5 → v6):
-#   - platforms.enabled = false(完全关热榜,只走 RSS)
+#   - platforms.enabled = true(TrendRadar 总采集开关必须开),sources = [](不抓热榜,只走 RSS)
 #   - RSS 改为 4 源(机器之心 / 量子位 / Ben's Bites / Product Hunt)
 #   - filter.method = ai(AI 智能筛选,不再靠关键词匹配)
 #   - ai_filter.prompt_file 指向 prompt.txt(TrendRadar 默认 AI 筛选 prompt)
 #   - 用户偏好单独写在 config/ai_interests.txt
 #   - ai_analysis_prompt.txt 重写(边筛边解读 + actionable 标签 + 去重)
 #   - 解读数量上限 8(AI 解读区显示),AI 解读总送 20(给 AI 看的原始数)
-#   - report.mode = current(每次推当天抓到的全部)
+#   - report.mode = daily(纯 RSS 当天汇总；避免空热榜让 current 模式退出)
 #   - RSS freshness 1 天
 #   - frequency_words.txt 简化为只留 GLOBAL_FILTER 兜底
 #
@@ -34,10 +34,12 @@ schedule:
 
 
 # ===============================================================
-# 2. 数据源 - 热榜平台(全部关闭,只走 RSS)
+# 2. 数据源 - 热榜平台
+#   注意:enabled 是 TrendRadar 的「总采集开关」,必须为 true。
+#   sources 设为空,因此不会抓任何热榜,只抓下面的 RSS。
 # ===============================================================
 platforms:
-  enabled: false
+  enabled: true
   api_url: ""
   sources: []
 
@@ -74,11 +76,12 @@ rss:
 
 
 # ===============================================================
-# 4. 报告模式(关键!)
-#   current = 推当前这次抓取里匹配关键词/AI 筛选后的全部
+# 4. 报告模式
+#   daily = 汇总当天 4 个 RSS 的内容；纯 RSS 场景不会因热榜为空而退出。
+#   freshness_filter.max_age_days = 1，仍只保留最近 1 天内容。
 # ===============================================================
 report:
-  mode: "current"                   # 每次跑都推当天匹配的全部
+  mode: "daily"                     # 纯 RSS 推荐：当天汇总，再交给 AI 筛选去重
   display_mode: "keyword"           # 按 actionable 标签分组
   sort_by_position_first: true
   rank_threshold: 5
@@ -209,16 +212,14 @@ ai:
 # ===============================================================
 # 9. AI 分析功能
 #   - enabled: true(必须开,后面 AI 解读才工作)
-#   - max_news_for_analysis: 20(给 AI 看的原始数)
-#   - display_max(自定义): AI 解读区显示 8 条
+#   - max_news_for_analysis: 20(最多给 AI 解读 20 条筛选结果)
 # ===============================================================
 ai_analysis:
   enabled: true                     # GitHub Actions 强制开启
   language: "Chinese"
   prompt_file: "ai_analysis_prompt.txt"   # v2 重写版:边筛边解读 + actionable 标签
-  mode: "incremental"               # 跟 report.mode 一致
-  max_news_for_analysis: 20         # 给 AI 看 20 条原始
-  display_max: 8                    # AI 解读区只显示 8 条
+  mode: "follow_report"            # 跟随 daily；确保 RSS 内容会送入 AI 解读
+  max_news_for_analysis: 20         # 最多给 AI 解读 20 条筛选结果
   include_rss: true                 # 开启 — RSS 内容也要 AI 解读
   include_standalone: false
   include_rank_timeline: true
