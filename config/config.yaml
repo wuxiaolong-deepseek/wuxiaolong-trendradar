@@ -82,10 +82,10 @@ rss:
 
 # ===============================================================
 # 4. 报告模式(关键!)
-#   incremental = 只推新增,周一时自动汇总 7 天新增
+#   current = 推当前这次抓取里匹配关键词的全部(不查重)
 # ===============================================================
 report:
-  mode: "incremental"             # 增量模式:周一自动汇总 7 天新增
+  mode: "current"                 # 当前抓到的全部:每次跑都推当天匹配的全部
   display_mode: "keyword"         # 按关键词分组显示
   sort_by_position_first: true    # 按 frequency_words.txt 的定义顺序
   rank_threshold: 5
