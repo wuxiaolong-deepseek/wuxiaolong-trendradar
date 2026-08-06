@@ -1,139 +1,55 @@
 # ═══════════════════════════════════════════════════════════════
-#                TrendRadar 频率词配置文件(已定制 v3)
-#                      4 组精准关键词
+#         TrendRadar 频率词配置文件(v6 - 2026-08-06)
+#         AI 智能筛选为主,关键词只做兜底过滤
 # ═══════════════════════════════════════════════════════════════
 #
-# 可视化配置编辑器: https://sansan0.github.io/TrendRadar/
+# v5 → v6 关键变更:
+#   - filter.method = ai(AI 智能筛选是主筛选)
+#   - 关键词匹配已不再生效(本文件只留 GLOBAL_FILTER 兜底排除垃圾)
+#   - 用户偏好驱动筛选 → 见 config/ai_interests.txt
+#   - actionable 标签 → 见 config/ai_analysis_prompt.txt
 #
-# 4 组核心方向,围绕"AI 圈/GitHub/教程/AI+教育"四大主线:
-#   1. AI 圈     — AI 模型、Agent、前沿研究
-#   2. GitHub    — 趋势项目、开源、代码
-#   3. 教程      — 学习资源、课程、教程
-#   4. AI+教育  — AI 在教育场景的应用
-#
-# 用法:每组用空行分隔,组内 OR 关系
-# 注意:关键词要精准,避免高考/教育政策/泛科技新闻污染
+# 注意:TrendRadar 仍会读本文件做兜底过滤(在 AI 筛选之后),
+# 任何命中 GLOBAL_FILTER 的新闻都会被强制排除。
 #
 
 
 # ───────────────────────────────────────────────────────────────
-#                        全局过滤区
+#                        全局过滤区(兜底)
 # ───────────────────────────────────────────────────────────────
-# 排除明显无关的内容
+# 命中以下任一关键词的新闻,会被强制排除
+# (AI 筛选可能漏掉明显垃圾,这里兜底)
 
 [GLOBAL_FILTER]
-# 标题党
+# 标题党 / 震惊体
 震惊
 标题党
+/震惊体|吓尿|跪了|炸了|血赚|爽文/
 
 # 娱乐八卦(避免吃瓜新闻)
-/娱乐八卦|明星绯闻|明星离婚|婚内出轨|娱乐圈|选秀综艺|粉丝互撕/
+/娱乐八卦|明星绯闻|明星离婚|婚内出轨|娱乐圈|选秀综艺|粉丝互撕|饭圈/
 
-# 明显无关的硬广
-/扫码加微|加微信|代购|海淘|代练|游戏代充/
+# 硬广 / 加微信 / 代购
+/扫码加微|加微信|代购|海淘|代练|游戏代充|私服|外挂/
 
-# 与 AI/GitHub/教程/教育无关的泛教育新闻(避免高考/教育政策污染)
+# 与 AI/工具/教育无关的泛教育新闻(避免高考/政策污染)
 高考志愿
 高考分数线
 /985|211|双一流/
 录取分数线
+/教育部新政|教育部新规|教育部发布/
+
+# 科技政策(用户明确不要)
+/中美贸易|出口管制|实体清单|制裁|关税战|卡脖子/
+
+# 与 AI 无关的泛科技新闻
+/比特币|Bitcoin|加密货币|区块链 NFT|元宇宙 Metaverse|Web3 概念/
 
 
 # ───────────────────────────────────────────────────────────────
-#                        词组定义区
+#                        词组定义区(留空)
 # ───────────────────────────────────────────────────────────────
+# AI 智能筛选已接管,本区不再需要关键词组
+# 留空即可(filter.method = ai 时,TrendRadar 会跳过本区)
 
 [WORD_GROUPS]
-
-
-# ═══════════════════════════════════════════════════════════════
-# 1. AI 圈 — AI 模型、Agent、前沿研究
-# ═══════════════════════════════════════════════════════════════
-
-[AI 圈]
-# 大模型与厂商
-/大模型|Large Language Model|LLM|GPT|Claude|Gemini|DeepSeek|Qwen|GLM|文心一言|通义千问|豆包|Kimi|智谱清言|星火|Mistral|Llama|Grok|o1|o3|GPT-5|GPT-4/
-# AI Agent 和智能体
-/AI Agent|AI 智能体|Agentic|智能体|多智能体|multi-agent|MCP|Model Context Protocol/
-# AI 技术突破
-/具身智能|世界模型|多模态|Multimodal|RAG|检索增强|Function Calling|Tool Use|Reinforcement Learning|强化学习|RLHF|Diffusion|扩散模型|Transformer|MoE|混合专家/
-# AI 工具与应用
-/(?<![a-zA-Z])AI(?![a-zA-Z])/i
-/OpenAI|Anthropic|Google DeepMind|Meta AI|Hugging Face|智谱|百川|月之暗面|MiniMax|阶跃星辰/
-# 训练与推理
-/训练|推理|微调|Fine-tuning|LoRA|预训练|蒸馏|量化|Quantization|GPU|TPU|NVIDIA|英伟达|算力|Token|tokens/
-# AI 行业新闻
-/AI 模型|AI 工具|AI 应用|AI 产品|AI 助手|AI 编程|AI 写代码|Code Copilot|Cursor|Copilot|Claude Code|Aider|Cline/
-# AI 中文常用词
-人工智能
-通用人工智能
-AGI
-超级智能
-
-
-# ═══════════════════════════════════════════════════════════════
-# 2. AI 工具 / 技能 — 新发布的 AI 工具、技能聚合平台
-# ═══════════════════════════════════════════════════════════════
-# 核心来源:Product Hunt(新工具发布)+ Hacker News(Launch HN/Show HN)
-
-[AI 工具/技能]
-# Product Hunt 平台
-/Product Hunt|producthunt\.com|product hunt|新产品发布/
-# Hacker News 上的工具发布
-/Launch HN|Show HN|launch|ship|announce|introducing|unveil|reveal|new tool|new app|new release|now available|now in beta|just launched/i
-# 工具/产品常用英文
-/app|tool|platform|service|extension|plugin|integration|SDK|framework|library|CLI|IDE|editor/
-# AI 技能生态核心词
-/AI skill|Agent skill|Claude skill|Claude Code skill|agent-skill|agent skill|MCP server|MCP tool|Model Context Protocol|AI coding/i
-# skills.sh / SkillHub 中国 等
-/skills\.sh|skill hub|skill hub|skillhub|skill-cn\.com|技能商店|技能市场|技能聚合|AI 技能|Agent 技能|skill creator|skill ranking|skill install|weekly install|trending skills/i
-# AI 应用方向(代替工具)
-/AI app|AI tool|AI agent|AI assistant|AI copilot|AI workflow|AI automation|AI platform|AI service|AI solution|AI product/i
-# 中文 AI 工具/产品
-/AI 工具|AI 产品|AI 应用|AI 助手|AI 编程|AI 代码|AI 代理|AI 智能体|AI 平台/
-
-
-# ═══════════════════════════════════════════════════════════════
-# 3. 教程 — 学习资源、课程、教程
-# ═══════════════════════════════════════════════════════════════
-
-[教程]
-# 教程核心词
-/(?<![一-龥])[Tt]utorial(?! [一-龥])|教程|入门|指南|手册|实战|案例|示例|范例|步骤|从零开始|零基础|保姆级/
-# 课程
-/课程|Course|Lecture|Lesson|MOOC|Coursera|edX|Udacity|网易公开课|慕课|网课/
-# 书籍
-/ebook|e-book|电子书|图书|书籍|book |Paper |论文|arxiv|预印本|综述/
-# 学习方法
-/学习笔记|学习路线|学习路径|学习资源|知识图谱|思维导图|笔记|notebook/
-# 编程教学
-/编程入门|编程学习|代码学习|代码教程|开发教程|Python 教程|Java 教程|JavaScript 教程|Rust 教程/
-# 视频内容
-/[Bb]站|YouTube|哔哩哔哩|技术分享|讲座|演讲|直播回放|录播/
-# 技术博客
-/[Bb]log|博客|掘金|CSDN|思否|SegmentFault|阮一峰|张鑫旭|廖雪峰/
-# 资源合集
-/[Cc]heat ?sheet|速查表|速记|清单|汇总|合集|大全|精选|Top 10|Top 20|年度盘点|年度最佳/
-
-
-# ═══════════════════════════════════════════════════════════════
-# 4. AI + 教育 — AI 在教育场景的应用
-# ═══════════════════════════════════════════════════════════════
-
-[AI+教育]
-# AI 教育产品
-/AI 助教|AI 辅导|AI 老师|AI 教师|教育大模型|教育智能体|智能 tutoring|智能 tutoring system|AI tutoring/
-# AI 在教育场景的应用
-/自适应学习|智适应学习|智适应教学|学习分析|学习数据分析|Educational Data Mining|学习行为分析|学情分析/
-# 教育数字化
-/教育数字化|教育数字化转型|智慧教育|智慧课堂|智慧校园|教育科技|EdTech|AI 教育|人工智能教育/
-# 教学场景
-/AI 备课|AI 教研|AI 评课|AI 出题|AI 编题|智能出题|自动出题|组卷系统|AI 作业|智能批改|AI 批改|自动批改/
-# AI 学习助手
-/学习助手|学习伴侣|学习 Agent|Study Agent|学习大模型|学科大模型|Socratic|Khanmigo|Khan Academy|Coursera Coach/
-# 提示词教学
-/Prompt Engineering|提示词工程|提示词|Prompt|提示词教学/
-# 中文 AI 助手用于学习
-/用 ChatGPT 学习|用 DeepSeek 学习|用 Kimi 学习|用 通义 学习|用 豆包 学习|用 智谱 学习/
-# 教育研究
-/AI 赋能教育|AI 助力教学|教育 +AI|教育 ×AI|教学 +AI|教学 ×AI/
